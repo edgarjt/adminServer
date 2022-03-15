@@ -25,12 +25,42 @@ Route::middleware('auth')->group(function () {
     Route::prefix('server')->group(function () {
         Route::prefix('all')->group(function () {
             Route::get('servers', [ServerController::class, 'AllIndex'])->name('servers');
-            Route::get('serverFormCreate', [ServerController::class, 'serverFormCreate'])->name('createFormServer');
-            Route::post('serverCreate', [ServerController::class, 'serverCreate'])->name('serverCreate');
-            Route::get('serverFormUpdate/{id}', [ServerController::class, 'serverFormUpdate'])->name('serverFormUpdate');
-            Route::get('serverDelete/{id}', [ServerController::class, 'serverDelete']);
+            Route::get('createFormServerAll', [ServerController::class, 'serverFormCreate'])->name('createFormServerAll');
+            Route::post('serverCreate', [ServerController::class, 'serverCreate'])->name('serverCreateAll');
+            Route::get('serverFormUpdate/{id}', [ServerController::class, 'serverFormUpdate'])->name('serverFormUpdateAll');
+            Route::get('serverDeleteAll/{id}', [ServerController::class, 'serverDelete']);
+        });
+
+        Route::prefix('high')->group(function () {
+            Route::get('serversHigh', [ServerController::class, 'AllIndex'])->name('serversHigh');
+            Route::get('createFormServerHigh', [ServerController::class, 'serverFormCreate'])->name('createFormServerHigh');
+            Route::post('serverCreate', [ServerController::class, 'serverCreate'])->name('serverCreateHigh');
+            Route::get('serverFormUpdate/{id}', [ServerController::class, 'serverFormUpdate'])->name('serverFormUpdateHigh');
+            Route::get('serverDeleteHigh/{id}', [ServerController::class, 'serverDelete']);
+        });
+
+        Route::prefix('medium')->group(function () {
+            Route::get('serversMedium', [ServerController::class, 'AllIndex'])->name('serversMedium');
+            Route::get('createFormServerMedium', [ServerController::class, 'serverFormCreate'])->name('createFormServerMedium');
+            Route::post('serverCreate', [ServerController::class, 'serverCreate'])->name('serverCreateMedium');
+            Route::get('serverFormUpdate/{id}', [ServerController::class, 'serverFormUpdate'])->name('serverFormUpdateMedium');
+            Route::get('serverDeleteMedium/{id}', [ServerController::class, 'serverDelete']);
+        });
+
+        Route::prefix('under')->group(function () {
+            Route::get('serversUnder', [ServerController::class, 'AllIndex'])->name('serversUnder');
+            Route::get('createFormServerUnder', [ServerController::class, 'serverFormCreate'])->name('createFormServerUnder');
+            Route::post('serverCreate', [ServerController::class, 'serverCreate'])->name('serverCreateUnder');
+            Route::get('serverFormUpdate/{id}', [ServerController::class, 'serverFormUpdate'])->name('serverFormUpdateUnder');
+            Route::get('serverDeleteUnder/{id}', [ServerController::class, 'serverDelete']);
+        });
+
+        Route::prefix('growth')->group(function () {
+            Route::get('serversGrowth', [ServerController::class, 'AllIndex'])->name('serversGrowth');
+            Route::get('createFormServerGrowth', [ServerController::class, 'serverFormCreate'])->name('createFormServerGrowth');
+            Route::post('serverCreate', [ServerController::class, 'serverCreate'])->name('serverCreateGrowth');
+            Route::get('serverFormUpdate/{id}', [ServerController::class, 'serverFormUpdate'])->name('serverFormUpdateGrowth');
+            Route::get('serverDeleteGrowth/{id}', [ServerController::class, 'serverDelete']);
         });
     });
 });
-
-

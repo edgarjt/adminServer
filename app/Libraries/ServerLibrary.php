@@ -5,28 +5,125 @@ namespace App\Libraries;
 use App\Constants\PriorityConstant;
 use App\Models\ServerModel;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Route;
 
 class ServerLibrary
 {
+    public $nameRoute = null;
+
+    public function __construct()
+    {
+        $this->nameRoute = Route::currentRouteName();
+    }
+
     public function AllIndex() {
-        $data = ServerModel::with('user')->get();
-        return view('server.all.index', ['data' => $data]);
+        if ($this->nameRoute == 'servers'){
+            $title = 'Servidores';
+            $route = 'createFormServerAll';
+            $route_delete = 'all/serverDeleteAll';
+            $route_update = 'serverFormUpdateAll';
+            $data = ServerModel::all();
+
+        } else if ($this->nameRoute == 'serversHigh'){
+            $title = 'Servidores Altos';
+            $route = 'createFormServerHigh';
+            $route_delete = 'high/serverDeleteHigh';
+            $route_update = 'serverFormUpdateHigh';
+            $data = ServerModel::where('priority', PriorityConstant::HIGH)->get();
+
+        }else if ($this->nameRoute == 'serversMedium'){
+            $title = 'Servidores Medios';
+            $route = 'createFormServerMedium';
+            $route_delete = 'medium/serverDeleteMedium';
+            $route_update = 'serverFormUpdateMedium';
+            $data = ServerModel::where('priority', PriorityConstant::MEDIUM)->get();
+
+        }else if ($this->nameRoute == 'serversUnder'){
+            $title = 'Servidores Bajos';
+            $route = 'createFormServerUnder';
+            $route_delete = 'under/serverDeleteUnder';
+            $route_update = 'serverFormUpdateUnder';
+            $data = ServerModel::where('priority', PriorityConstant::UNDER)->get();
+
+        }else if ($this->nameRoute == 'serversGrowth'){
+            $title = 'Servidores Desarrollos';
+            $route = 'createFormServerGrowth';
+            $route_delete = 'growth/serverDeleteGrowth';
+            $route_update = 'serverFormUpdateGrowth';
+            $data = ServerModel::where('priority', PriorityConstant::GROWTH)->get();
+        }
+
+        return view('server.index', ['data' => $data, 'title' => $title, 'route' => $route, 'route_delete' => $route_delete, 'route_update' => $route_update]);
     }
 
     public function serverFormCreate()
     {
-        $priority = PriorityConstant::PRIORITY;
+        if ($this->nameRoute == 'createFormServerAll'){
+            $priority = PriorityConstant::PRIORITY;
+            $route = 'serverCreateAll';
 
-        return view('server.all.create', ['priority' => $priority]);
+        } else if ($this->nameRoute == 'createFormServerHigh'){
+            $priority = [
+                ['priority' => PriorityConstant::HIGH]
+            ];
+            $route = 'serverCreateHigh';
+
+        }else if ($this->nameRoute == 'createFormServerMedium'){
+            $priority = [
+                ['priority' => PriorityConstant::MEDIUM]
+            ];
+            $route = 'serverCreateMedium';
+
+        }else if ($this->nameRoute == 'createFormServerUnder'){
+            $priority = [
+                ['priority' => PriorityConstant::UNDER]
+            ];
+            $route = 'serverCreateUnder';
+
+        }else if ($this->nameRoute == 'createFormServerGrowth'){
+            $priority = [
+                ['priority' => PriorityConstant::GROWTH]
+            ];
+            $route = 'serverCreateGrowth';
+        }
+
+        return view('server.create', ['priority' => $priority, 'route' => $route]);
     }
 
     public function serverFormUpdate($id)
     {
-        $priority = PriorityConstant::PRIORITY;
         $data = ServerModel::find($id);
 
-        return view('server.all.edit', ['data' => $data,'priority' => $priority]);
+        if ($this->nameRoute == 'serverFormUpdateAll'){
+            $priority = PriorityConstant::PRIORITY;
+            $route = 'serverCreateAll';
+
+        } else if ($this->nameRoute == 'serverFormUpdateHigh'){
+            $priority = [
+                ['priority' => PriorityConstant::HIGH]
+            ];
+            $route = 'serverCreateHigh';
+
+        }else if ($this->nameRoute == 'serverFormUpdateMedium'){
+            $priority = [
+                ['priority' => PriorityConstant::MEDIUM]
+            ];
+            $route = 'serverCreateMedium';
+
+        }else if ($this->nameRoute == 'serverFormUpdateUnder'){
+            $priority = [
+                ['priority' => PriorityConstant::UNDER]
+            ];
+            $route = 'serverCreateUnder';
+
+        }else if ($this->nameRoute == 'serverFormUpdateGrowth'){
+            $priority = [
+                ['priority' => PriorityConstant::GROWTH]
+            ];
+            $route = 'serverCreateGrowth';
+        }
+
+        return view('server.edit', ['data' => $data,'priority' => $priority, 'route' => $route]);
     }
 
     public function serverCreate($request)
@@ -65,7 +162,23 @@ class ServerLibrary
         else
             $response = ['title' => 'Éxito!', 'message' => $data->name . $message, 'status' => 'success'];
 
-        return redirect()->route('servers')->with($response);
+        if ($this->nameRoute == 'serverCreateAll'){
+            $route = 'servers';
+
+        } else if ($this->nameRoute == 'serverCreateHigh'){
+            $route = 'serversHigh';
+
+        }else if ($this->nameRoute == 'serverCreateMedium'){
+            $route = 'serversMedium';
+
+        }else if ($this->nameRoute == 'serverCreateUnder'){
+            $route = 'serversUnder';
+
+        }else if ($this->nameRoute == 'serverCreateGrowth'){
+            $route = 'serversGrowth';
+        }
+
+        return redirect()->route($route)->with($response);
     }
 
     public function serverDelete($id)
@@ -79,6 +192,22 @@ class ServerLibrary
 
         $data->delete();
 
-        return redirect()->route('servers')->with($response);
+        if (strpos($_SERVER['HTTP_REFERER'], 'all')){
+            $route = 'server/all/servers';
+
+        } else if (strpos($_SERVER['HTTP_REFERER'], 'high')){
+            $route = 'server/high/serversHigh';
+
+        }else if (strpos($_SERVER['HTTP_REFERER'], 'medium')){
+            $route = 'server/medium/serversMedium';
+
+        }else if (strpos($_SERVER['HTTP_REFERER'], 'under')){
+            $route = 'server/under/serversUnder';
+
+        }else if (strpos($_SERVER['HTTP_REFERER'], 'growth')){
+            $route = 'server/growth/serversGrowth';
+        }
+
+        return redirect($route)->with($response);
     }
 }

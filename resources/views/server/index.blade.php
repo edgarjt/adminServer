@@ -3,7 +3,7 @@
 @section('title', 'Servidores | Todos')
 
 @section('content_header')
-    <h1>Servidores</h1>
+    <h1>{{$title}}</h1>
 @stop
 
 @section('content')
@@ -12,7 +12,7 @@
             <h3 class="card-title">Listado de servidores</h3>
 
             <div class="card-tools">
-                <a href="{{route('createFormServer')}}" class="btn btn-primary">Nuevo</a>
+                <a href="{{route($route)}}" class="btn btn-primary">Nuevo</a>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
                     <td>{{$items->user_server}}</td>
                     <td>{{$items->user->fullname}}</td>
                     <td>
-                        <a href="{{route('serverFormUpdate', $items->id)}}" class="btn btn-sm btn-info mr-1"><i class="fas fa-regular fa-pen"></i></a>
+                        <a href="{{route($route_update, $items->id)}}" class="btn btn-sm btn-info mr-1"><i class="fas fa-regular fa-pen"></i></a>
                         <button onclick="deleteServer({{$items->id}})" class="btn btn-sm btn-danger"><i class="fas fa-regular fa-trash"></i></button>
                     </td>
                 </tr>
@@ -68,15 +68,18 @@
 
 @section('js')
     <script>
+
+
         @if(session('message'))
         let message = @json(session('message'));
         let status = @json(session('status'));
         let title = @json(session('title'));
-
         Swal.fire(title, message, status);
         @endif
 
         function deleteServer(id) {
+            let route_delete = @json($route_delete);
+
             Swal.fire({
                 title: '¿Estas seguro?',
                 text: "¡No podrás revertir esto!",
@@ -88,7 +91,7 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.value) {
-                    $(location).prop('href', '/server/all/serverDelete/' + id)
+                    $(location).prop('href', '/server/'+route_delete+'/' + id)
                 }
             })
         }

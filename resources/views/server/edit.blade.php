@@ -15,7 +15,7 @@
         </div>
 
         <div class="card-body">
-            <form action="{{route('serverCreate')}}" method="POST">
+            <form action="{{route($route)}}" method="POST">
                 @csrf
                 <div class="form-row">
                     <div class="form-group col-md-6">

@@ -268,19 +268,19 @@ return [
                 ],
                 [
                     'text' => 'Altos',
-                    'url'  => '#',
+                    'url'  => 'server/high/serversHigh',
                 ],
                 [
                     'text' => 'Medios',
-                    'url'  => '#',
+                    'url'  => 'server/medium/serversMedium',
                 ],
                 [
                     'text' => 'Bajos',
-                    'url'  => '#',
+                    'url'  => 'server/under/serversUnder',
                 ],
                 [
                     'text' => 'Desarrollos',
-                    'url'  => '#',
+                    'url'  => 'server/growth/serversGrowth',
                 ]
             ],
         ]
