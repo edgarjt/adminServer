@@ -249,7 +249,7 @@ return [
         ['header' => 'MI CUENTA'],
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'url'  => 'profile/settings',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
@@ -397,12 +397,12 @@ return [
             ],
         ],
         'Others' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
-                    'type' => '',
-                    'asset' => false,
-                    'location' => '/',
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'css/style.css',
                 ]
             ],
         ]

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServerController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,11 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'home']);
     Route::get('home', [HomeController::class, 'index'])->name('home');
+
+    Route::prefix('profile')->group(function () {
+        Route::get('settings', [UserController::class, 'index'])->name('settings');
+        Route::post('edit', [UserController::class, 'edit'])->name('edit');
+    });
 
     Route::prefix('server')->group(function () {
         Route::prefix('all')->group(function () {
