@@ -2,3 +2,6 @@ mix-manifest.json
 vendor
 js/app.js
 css/app.css
+css/app.css.map
+js/app.js.LICENSE.txt
+js/app.js.map
